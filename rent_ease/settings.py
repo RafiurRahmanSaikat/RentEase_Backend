@@ -4,6 +4,16 @@ from pathlib import Path
 import dj_database_url
 import environ
 
+# Load environment variables
+env = environ.Env()
+environ.Env.read_env()
+
+
+from dotenv import load_dotenv
+
+load_dotenv()
+import environ
+
 env = environ.Env()
 environ.Env.read_env()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -118,34 +128,26 @@ WSGI_APPLICATION = "rent_ease.wsgi.app"
 
 
 # ? Database Configuration
-# https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
-    }
-}
-
-#! LIVE DATABASE
-
-#! OnRender
-# DATABASES = {
-#     "default": dj_database_url.config(default=env("DATABASE"), conn_max_age=600)
-# }
-#! SUPABASE
 
 # DATABASES = {
 #     "default": {
-#         "ENGINE": "django.db.backends.postgresql",
-#         "NAME": "postgres",
-#         "USER": os.environ.get("SUPABASE_DB_USER"),
-#         "PASSWORD": os.environ.get("SUPABASE_DB_PASSWORD"),
-#         "HOST": os.environ.get("SUPABASE_DB_HOST"),
-#         "PORT": "6543",
+#         "ENGINE": "django.db.backends.sqlite3",
+#         "NAME": BASE_DIR / "db.sqlite3",
 #     }
 # }
 
+
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": env("DB_NAME"),
+        "USER": env("DB_USER"),
+        "PASSWORD": env("DB_PASSWORD"),
+        "HOST": env("DB_HOST"),
+        "PORT": env("DB_PORT"),
+    }
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
