@@ -1,79 +1,53 @@
 import os
 from pathlib import Path
 
-import dj_database_url
 import environ
-
-# Load environment variables
-env = environ.Env()
-environ.Env.read_env()
-
-
+from corsheaders.defaults import default_headers
+from decouple import config
 from dotenv import load_dotenv
 
-load_dotenv()
-import environ
-
 env = environ.Env()
 environ.Env.read_env()
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
+load_dotenv()
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
-# SECURITY WARNING: keep the secret key used in production secret!
-
-
-# SECURITY WARNING: don't run with debug turned on in production!
 SECRET_KEY = env("SECRET_KEY")
 
-DEBUG = True
+DEBUG = config("DEBUG", default=False, cast=bool)
 
 ALLOWED_HOSTS = [
-    "http://localhost:5173",
-    "127.0.0.1",
+    "localhost",
+    "shopzone-backend-gilt.vercel.app",
     ".vercel.app",
-    "https://*.127.0.0.1",
-    "https://house-rent-lyart.vercel.app",
-    "https://house-rent-backend.onrender.com",
-    "https://house-rent-ease.netlify.app",
-    "*",
+    "127.0.0.1",
+    ".now.sh",
 ]
+
 CORS_ALLOW_ALL_ORIGINS = True
-
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:5173",
-    "https://house-rent-lyart.vercel.app",
-    "https://house-rent-ease.netlify.app",
-    "https://house-rent-backend.onrender.com",
-    "http://127.0.0.1",
-    "http://localhost:3000",
-    "http://localhost:5173",
-    "https://house-rent-ease.netlify.app",
-    "https://house-rent-backend.onrender.com",
-    "https://house-rent-lyart.vercel.app",
-]
-
+CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOW_METHODS = ["DELETE", "GET", "OPTIONS", "PATCH", "POST", "PUT"]
 
 CSRF_TRUSTED_ORIGINS = [
-    "https://127.0.0.1",
-    "https://*.127.0.0.1",
-    "http://localhost:3000",
-    "http://localhost:5173",
-    "https://house-rent-backend.onrender.com",
-    "https://house-rent-ease.netlify.app",
-    "https://house-rent-lyart.vercel.app",
+    "https://shopzone-frontend.vercel.app",
 ]
 
 
-# Email Settings
-EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-EMAIL_HOST = "smtp.gmail.com"
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-EMAIL_HOST_USER = env("EMAIL_HOST_USER")
-EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD")
-DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+CORS_ALLOW_HEADERS = [
+    "authorization",
+    "content-type",
+    "accept",
+    "accept-encoding",
+    "dnt",
+    "origin",
+    "user-agent",
+    "x-csrftoken",
+    "x-requested-with",
+]
+CORS_ALLOW_HEADERS = list(default_headers) + [
+    "X-CSRF-Token",
+    "X-Api-Version",
+]
 
 # Application definition
 
@@ -105,6 +79,7 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
+
 ROOT_URLCONF = "rent_ease.urls"
 
 
@@ -127,9 +102,7 @@ TEMPLATES = [
 WSGI_APPLICATION = "rent_ease.wsgi.app"
 
 
-# ? Database Configuration
-
-
+#! LOCAL DEV Database
 # DATABASES = {
 #     "default": {
 #         "ENGINE": "django.db.backends.sqlite3",
@@ -138,16 +111,21 @@ WSGI_APPLICATION = "rent_ease.wsgi.app"
 # }
 
 
+# ! Live DATABSE
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": env("DB_NAME"),
-        "USER": env("DB_USER"),
-        "PASSWORD": env("DB_PASSWORD"),
-        "HOST": env("DB_HOST"),
-        "PORT": env("DB_PORT"),
+        "NAME": config("DB_NAME"),
+        "USER": config("DB_USER"),
+        "PASSWORD": config("DB_PASSWORD"),
+        "HOST": config("DB_HOST"),
+        "PORT": config("DB_PORT"),
+        "OPTIONS": {
+            "sslmode": "require",
+        },
     }
 }
+
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
@@ -192,11 +170,17 @@ USE_TZ = True
 STATIC_URL = "static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
 MEDIA_URL = "/media/"
-
-
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
-
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+# Email Settings
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = "smtp.gmail.com"
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = env("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD")
