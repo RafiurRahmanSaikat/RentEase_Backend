@@ -17,6 +17,7 @@ SECRET_KEY = env("SECRET_KEY")
 DEBUG = config("DEBUG", default=False, cast=bool)
 
 ALLOWED_HOSTS = [
+    "https://rent-ease-backend-theta.vercel.app",
     "https://rent-ease-kappa.vercel.app",
     "localhost",
     ".vercel.app",
@@ -29,7 +30,12 @@ CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOW_METHODS = ["DELETE", "GET", "OPTIONS", "PATCH", "POST", "PUT"]
 
 CSRF_TRUSTED_ORIGINS = [
-    "https://shopzone-frontend.vercel.app",
+    "https://rent-ease-backend-theta.vercel.app",
+    "https://rent-ease-kappa.vercel.app",
+    "localhost",
+    ".vercel.app",
+    "127.0.0.1",
+    ".now.sh",
 ]
 
 
