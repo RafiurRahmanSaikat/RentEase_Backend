@@ -25,45 +25,34 @@ ALLOWED_HOSTS = [
     "127.0.0.1",
     ".now.sh",
 ]
-
 # CORS_ALLOW_ALL_ORIGINS = True
-CORS_ALLOW_ALL_ORIGINS = False
+# CORS_ALLOW_ALL_ORIGINS = False
 
 CORS_ALLOW_CREDENTIALS = True
 
 CORS_ALLOWED_ORIGINS = [
-    "https://rent-ease-kappa.vercel.app",
+    "http://localhost:5173",
     "http://localhost:3000",
+    "http://127.0.0.1:5173",
     "http://127.0.0.1:3000",
+    "https://rent-ease-kappa.vercel.app",
 ]
+CORS_ALLOW_CREDENTIALS = True
 
-CORS_ALLOW_METHODS = ["DELETE", "GET", "OPTIONS", "PATCH", "POST", "PUT"]
+CORS_ALLOW_METHODS = [
+    "DELETE",
+    "GET",
+    "OPTIONS",
+    "PATCH",
+    "POST",
+    "PUT",
+]
 
 CSRF_TRUSTED_ORIGINS = [
-    "https://rent-ease-backend-theta.vercel.app",
-    "https://rent-ease-backend-livid.vercel.app",  # Add this
+    "https://rent-ease-backend-livid.vercel.app",
     "https://rent-ease-kappa.vercel.app",
-    "http://localhost",
-    "https://*.vercel.app",
-    "http://127.0.0.1",
-    "https://*.now.sh",
-]
-
-
-CORS_ALLOW_HEADERS = [
-    "authorization",
-    "content-type",
-    "accept",
-    "accept-encoding",
-    "dnt",
-    "origin",
-    "user-agent",
-    "x-csrftoken",
-    "x-requested-with",
-]
-CORS_ALLOW_HEADERS = list(default_headers) + [
-    "X-CSRF-Token",
-    "X-Api-Version",
+    "http://localhost:5173",
+    "http://127.0.0.1:5173",
 ]
 
 # Application definition
