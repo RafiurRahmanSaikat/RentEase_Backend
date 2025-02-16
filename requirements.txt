@@ -32,3 +32,4 @@ tzdata
 virtualenv
 python-decouple
 whitenoise
+python-dotenv
