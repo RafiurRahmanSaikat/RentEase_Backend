@@ -1,59 +1,51 @@
 import os
 from pathlib import Path
 
-import environ
 from corsheaders.defaults import default_headers
 from decouple import config
-from dotenv import load_dotenv
-
-env = environ.Env()
-environ.Env.read_env()
-load_dotenv()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-
-SECRET_KEY = env("SECRET_KEY")
-
+SECRET_KEY = config("SECRET_KEY")
 DEBUG = config("DEBUG", default=False, cast=bool)
 
 ALLOWED_HOSTS = [
-    "rent-ease-backend-theta.vercel.app",
     "rent-ease-backend-livid.vercel.app",
-    "rent-ease-kappa.vercel.app",
     "localhost",
     ".vercel.app",
     "127.0.0.1",
     ".now.sh",
 ]
-# CORS_ALLOW_ALL_ORIGINS = True
-# CORS_ALLOW_ALL_ORIGINS = False
 
+
+CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_CREDENTIALS = True
 
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:5173",
-    "http://localhost:3000",
-    "http://127.0.0.1:5173",
-    "http://127.0.0.1:3000",
-    "https://rent-ease-kappa.vercel.app",
-]
-CORS_ALLOW_CREDENTIALS = True
-
-CORS_ALLOW_METHODS = [
-    "DELETE",
-    "GET",
-    "OPTIONS",
-    "PATCH",
-    "POST",
-    "PUT",
-]
+CORS_ALLOW_METHODS = ["DELETE", "GET", "OPTIONS", "PATCH", "POST", "PUT"]
 
 CSRF_TRUSTED_ORIGINS = [
-    "https://rent-ease-backend-livid.vercel.app",
     "https://rent-ease-kappa.vercel.app",
     "http://localhost:5173",
     "http://127.0.0.1:5173",
 ]
+
+
+CORS_ALLOW_HEADERS = [
+    "authorization",
+    "content-type",
+    "accept",
+    "accept-encoding",
+    "dnt",
+    "origin",
+    "user-agent",
+    "x-csrftoken",
+    "x-requested-with",
+]
+
+CORS_ALLOW_HEADERS = list(default_headers) + [
+    "X-CSRF-Token",
+    "X-Api-Version",
+]
+
 
 # Application definition
 
@@ -188,5 +180,5 @@ EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = "smtp.gmail.com"
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = env("EMAIL_HOST_USER")
-EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD")
+EMAIL_HOST_USER = config("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD")
