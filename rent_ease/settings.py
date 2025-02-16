@@ -17,8 +17,8 @@ SECRET_KEY = env("SECRET_KEY")
 DEBUG = config("DEBUG", default=False, cast=bool)
 
 ALLOWED_HOSTS = [
+    "https://rent-ease-kappa.vercel.app",
     "localhost",
-    "shopzone-backend-gilt.vercel.app",
     ".vercel.app",
     "127.0.0.1",
     ".now.sh",
