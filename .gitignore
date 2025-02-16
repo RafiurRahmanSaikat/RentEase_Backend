@@ -16,8 +16,6 @@ media/
 *.swp
 *.swo
 
-# Django static files
-staticfiles/
 
 # Django migrations
 */migrations/*
