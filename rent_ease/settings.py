@@ -18,6 +18,7 @@ DEBUG = config("DEBUG", default=False, cast=bool)
 
 ALLOWED_HOSTS = [
     "rent-ease-backend-theta.vercel.app",
+    "rent-ease-backend-livid.vercel.app",
     "rent-ease-kappa.vercel.app",
     "localhost",
     ".vercel.app",
@@ -25,19 +26,27 @@ ALLOWED_HOSTS = [
     ".now.sh",
 ]
 
-CORS_ALLOW_ALL_ORIGINS = True
+# CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_ALL_ORIGINS = False
 
 CORS_ALLOW_CREDENTIALS = True
+
+CORS_ALLOWED_ORIGINS = [
+    "https://rent-ease-kappa.vercel.app",
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+]
 
 CORS_ALLOW_METHODS = ["DELETE", "GET", "OPTIONS", "PATCH", "POST", "PUT"]
 
 CSRF_TRUSTED_ORIGINS = [
-    "rent-ease-backend-theta.vercel.app",
-    "rent-ease-kappa.vercel.app",
-    "localhost",
-    ".vercel.app",
-    "127.0.0.1",
-    ".now.sh",
+    "https://rent-ease-backend-theta.vercel.app",
+    "https://rent-ease-backend-livid.vercel.app",  # Add this
+    "https://rent-ease-kappa.vercel.app",
+    "http://localhost",
+    "https://*.vercel.app",
+    "http://127.0.0.1",
+    "https://*.now.sh",
 ]
 
 
