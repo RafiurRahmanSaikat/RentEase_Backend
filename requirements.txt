@@ -30,4 +30,5 @@ sqlparse
 typing_extensions
 tzdata
 virtualenv
+python-decouple
 whitenoise
