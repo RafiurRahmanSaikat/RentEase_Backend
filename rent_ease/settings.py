@@ -9,8 +9,11 @@ SECRET_KEY = config("SECRET_KEY")
 DEBUG = config("DEBUG", default=False, cast=bool)
 
 ALLOWED_HOSTS = [
+    "rent-ease-kappa.vercel.app",
     "rent-ease-backend-livid.vercel.app",
     "localhost",
+    "localhost:5173",
+    "127.0.0.1:5173",
     ".vercel.app",
     "127.0.0.1",
     ".now.sh",
