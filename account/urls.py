@@ -1,46 +1,36 @@
-from django.conf import settings
-from django.conf.urls.static import static
-from django.urls import path
-from rest_framework.routers import DefaultRouter
+from django.urls import include, path, re_path
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 from .views import (
-    AddFavorite,
     ChangePasswordView,
-    EmailConfirmationView,
-    RemoveFavorite,
-    UpdateProfileView,
-    UserInfoAPIView,
-    UserLoginAPIView,
-    UserLogoutAPIView,
-    UserRegisterAPIView,
+    ProfileViewSet,
+    RegisterView,
+    ResetPasswordConfirmView,
+    ResetPasswordRequestView,
+    VerifyEmail,
 )
 
-router = DefaultRouter()
-
 urlpatterns = [
-    path("register/", UserRegisterAPIView.as_view(), name="register"),
-    path("login/", UserLoginAPIView.as_view(), name="login"),
-    path("logout/", UserLogoutAPIView.as_view(), name="logout"),
-    path("profile/", UserInfoAPIView.as_view(), name="user_info"),
-    path("updateProfile/", UpdateProfileView.as_view(), name="update_profile"),
-    path("change-password/", ChangePasswordView.as_view(), name="change_password"),
+    path("register/", RegisterView.as_view(), name="register"),
+    path("login/", TokenObtainPairView.as_view(), name="token_obtain_pair"),
+    path("token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
+    path("email-verify/", VerifyEmail.as_view(), name="email-verify"),
     path(
-        "profile/favorites/add/<int:ad_id>/",
-        AddFavorite.as_view(),
-        name="add_favorite",
+        "profile/",
+        ProfileViewSet.as_view(
+            {"get": "list", "put": "update", "patch": "partial_update"}
+        ),
+        name="profile",
     ),
+    path("change-password/", ChangePasswordView.as_view(), name="change-password"),
     path(
-        "profile/favorites/remove/<int:ad_id>/",
-        RemoveFavorite.as_view(),
-        name="remove_favorite",
+        "reset-password/",
+        ResetPasswordRequestView.as_view(),
+        name="reset-password-request",
     ),
-    path(
-        "active/<str:uid64>/<str:token>/",
-        EmailConfirmationView.as_view(),
-        name="email_confirm",
+    re_path(
+        r"^reset-password-confirm/(?P<uidb64>[\w-]+)/(?P<token>[\w-]+)/$",
+        ResetPasswordConfirmView.as_view(),
+        name="password-reset-confirm",
     ),
 ]
-
-
-if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

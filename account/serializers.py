@@ -1,92 +1,114 @@
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
+from django.contrib.auth.password_validation import validate_password
 from rest_framework import serializers
 
-from .models import UserAccount
+User = get_user_model()
 
 
-class RegistrationSerializer(serializers.ModelSerializer):
-    password = serializers.CharField(write_only=True)
-    confirm_password = serializers.CharField(write_only=True)
-    account_type = serializers.ChoiceField(
-        choices=[("Admin", "Admin"), ("User", "User")]
+class UserSerializer(serializers.ModelSerializer):
+    full_name = serializers.SerializerMethodField(read_only=True)
+
+    class Meta:
+        model = User
+        fields = [
+            "id",
+            "username",
+            "first_name",
+            "last_name",
+            "full_name",
+            "email",
+            "phone",
+            "address",
+            "image",
+            "role",
+            "is_email_verified",
+        ]
+
+    def get_full_name(self, obj):
+        return obj.get_full_name()
+
+
+class RegisterSerializer(serializers.ModelSerializer):
+    password = serializers.CharField(
+        write_only=True, required=True, validators=[validate_password]
     )
-    address = serializers.CharField(required=True)
-    image = serializers.CharField(required=True)
-    mobile_number = serializers.CharField(required=True)
+    password2 = serializers.CharField(write_only=True, required=True)
 
+    class Meta:
+        model = User
+        fields = (
+            "username",
+            "first_name",
+            "last_name",
+            "email",
+            "password",
+            "password2",
+            "phone",
+            "address",
+            "image",
+            "role",
+        )
+
+    def validate(self, attrs):
+        if attrs["password"] != attrs["password2"]:
+            raise serializers.ValidationError({"password": "Passwords must match."})
+        return attrs
+
+    def create(self, validated_data):
+        validated_data.pop("password2")
+        # If role is not explicitly admin, force it to 'user'
+        # if validated_data.get("role") != "admin":
+        #     validated_data["role"] = "user"
+        user = User.objects.create_user(**validated_data)
+        user.is_active = False  # User must verify email first
+        user.save()
+        return user
+
+
+class ProfileUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = [
             "username",
-            "email",
             "first_name",
             "last_name",
-            "password",
-            "confirm_password",
-            "account_type",
+            "email",
+            "phone",
             "address",
             "image",
-            "mobile_number",
+            "role",
         ]
+        # This is more concise than listing every field
+        extra_kwargs = {field: {"required": False} for field in fields}
 
     def validate(self, data):
-        if data["password"] != data["confirm_password"]:
-            raise serializers.ValidationError(
-                {"confirm_password": "Passwords must match."}
-            )
-        if User.objects.filter(email=data["email"]).exists():
-            raise serializers.ValidationError({"email": "Email already exists."})
+        # More efficient to check both fields in one method
+        # This reduces database queries by checking both in one go
+        user = self.context["request"].user
+
+        # Only validate email if it's being updated
+        if "email" in data and data["email"] != user.email:
+            if User.objects.filter(email=data["email"]).exclude(pk=user.pk).exists():
+                raise serializers.ValidationError(
+                    {"email": "This email is already in use."}
+                )
+
+        # Only validate username if it's being updated
+        if "username" in data and data["username"] != user.username:
+            if (
+                User.objects.filter(username=data["username"])
+                .exclude(pk=user.pk)
+                .exists()
+            ):
+                raise serializers.ValidationError(
+                    {"username": "This username is already in use."}
+                )
+
         return data
 
-    def create(self, validated_data):
-
-        validated_data.pop("confirm_password")
-
-        user = User(
-            username=validated_data["username"],
-            email=validated_data["email"],
-            first_name=validated_data["first_name"],
-            last_name=validated_data["last_name"],
-        )
-        user.set_password(validated_data["password"])
-        user.is_active = False
-        user.save()
-
-        UserAccount.objects.create(
-            user=user,
-            account_type=validated_data["account_type"],
-            address=validated_data["address"],
-            image=validated_data["image"],
-            mobile_number=validated_data["mobile_number"],
-        )
-
-        return user
-
-
-class UserLoginSerializer(serializers.Serializer):
-    username = serializers.CharField(max_length=16, required=True)
-    password = serializers.CharField(max_length=32, required=True)
-
-
-class UserSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = User
-        fields = ["id", "username", "email", "first_name", "last_name"]
-
-
-class UserAccountSerializer(serializers.ModelSerializer):
-    user = UserSerializer(read_only=True)
-
-    class Meta:
-        model = UserAccount
-
-        fields = [
-            "id",
-            "user",
-            "account_type",
-            "address",
-            "image",
-            "mobile_number",
-            "is_verified",
-            "favourites",
-        ]
+    def update(self, instance, validated_data):
+        # This performs a single update operation regardless of how many fields are changed
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
+        instance.save()
+        return instance

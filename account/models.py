@@ -1,31 +1,21 @@
-import uuid
-
-from django.contrib.auth.models import User
+# account/models.py
+from django.contrib.auth.models import AbstractUser
 from django.db import models
 
 
-class UserAccount(models.Model):
-    account_type = models.CharField(
-        choices=(("Admin", "Admin"), ("User", "User")), max_length=100, default="User"
+class User(AbstractUser):
+    ROLE_CHOICES = (
+        ("user", "User"),
+        ("admin", "Admin"),
     )
-    user = models.OneToOneField(User, related_name="account", on_delete=models.CASCADE)
-    address = models.CharField(max_length=100)
-    # image = models.ImageField(upload_to="account/user/profile/")
-    image = models.TextField()
-    mobile_number = models.CharField(max_length=12)
-    is_verified = models.BooleanField(default=False)
-    verification_token = models.UUIDField(
-        default=uuid.uuid4,
-        editable=False,
-        unique=True,
-        null=True,
-        blank=True,
-    )
-    favourites = models.ManyToManyField(
-        "house.Advertisement",
-        related_name="favourite",
-        blank=True,
-    )
+    email = models.EmailField(unique=True)
+    phone = models.CharField(max_length=20, blank=True, null=True)
+    address = models.TextField(blank=True, null=True)
+    image = models.URLField(blank=True, null=True)
+    role = models.CharField(max_length=10, choices=ROLE_CHOICES, default="user")
+    is_email_verified = models.BooleanField(default=False)
+
+    REQUIRED_FIELDS = ["email"]
 
     def __str__(self):
-        return f"{self.user.first_name} {self.user.last_name}"
+        return self.username
