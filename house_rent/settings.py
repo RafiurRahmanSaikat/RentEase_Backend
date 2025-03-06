@@ -60,7 +60,6 @@ INSTALLED_APPS = [
     "django_extensions",
     "silk",
     "drf_spectacular",
-    "drf_spectacular_sidecar",
 ]
 
 MIDDLEWARE = [
