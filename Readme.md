@@ -57,7 +57,7 @@ A Django REST Framework project for a house rental application where users can l
 
 1. **Clone the repository:**
    ```bash
-   git clone <repository_url>
+   git clone https://github.com/RafiurRahmanSaikat/RentEase_Backend
    cd house_rent
 
 ## Reset The Project
@@ -68,6 +68,7 @@ A Django REST Framework project for a house rental application where users can l
    find . -path "*/migrations/*.py" -not -name "__init__.py" -exec rm -f {} \;
    find . -type d -name "__pycache__" -exec rm -r {} \;
 
+   python manage.py collectstatic
    python manage.py makemigrations
    python manage.py migrate
    python populate_db.py

@@ -1,4 +1,7 @@
 # house_rent/urls.py
+from account.views import UserViewSet
+from django.conf import settings
+from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include, path
 from drf_spectacular.views import (
@@ -7,8 +10,6 @@ from drf_spectacular.views import (
     SpectacularSwaggerView,
 )
 from rest_framework.routers import DefaultRouter
-
-from account.views import UserViewSet
 
 router = DefaultRouter()
 
@@ -37,3 +38,5 @@ urlpatterns = [
         name="redoc",
     ),
 ]
+if settings.DEBUG:
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

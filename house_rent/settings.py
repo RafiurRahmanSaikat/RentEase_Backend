@@ -39,6 +39,7 @@ CORS_ALLOW_HEADERS = [
 CORS_ALLOW_HEADERS = list(default_headers) + [
     "X-CSRF-Token",
     "X-Api-Version",
+    "content-type",
 ]
 # Application definition
 
@@ -72,6 +73,7 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "silk.middleware.SilkyMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
 ]
 
 
@@ -95,28 +97,28 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "house_rent.wsgi.application"
 
-# #! LOCAL DEV Database
-# DATABASES = {
-#     "default": {
-#         "ENGINE": "django.db.backends.sqlite3",
-#         "NAME": BASE_DIR / "db.sqlite3",
-#     }
-# }
-
-# ! Live DATABSE
+#! LOCAL DEV Database
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": config("DB_NAME"),
-        "USER": config("DB_USER"),
-        "PASSWORD": config("DB_PASSWORD"),
-        "HOST": config("DB_HOST"),
-        "PORT": config("DB_PORT"),
-        "OPTIONS": {
-            "sslmode": "require",
-        },
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": BASE_DIR / "db.sqlite3",
     }
 }
+
+# ! Live DATABSE
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.postgresql",
+#         "NAME": config("DB_NAME"),
+#         "USER": config("DB_USER"),
+#         "PASSWORD": config("DB_PASSWORD"),
+#         "HOST": config("DB_HOST"),
+#         "PORT": config("DB_PORT"),
+#         "OPTIONS": {
+#             "sslmode": "require",
+#         },
+#     }
+# }
 
 # Use our custom user model
 AUTH_USER_MODEL = "account.User"
@@ -156,6 +158,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
 STATIC_URL = "static/"
+STATIC_ROOT = BASE_DIR / "staticfiles"
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
