@@ -1,3 +1,88 @@
+    Create a modern, production-ready React.js frontend for a House Rent application that connects to a Django Rest Framework (DRF) API. The frontend should follow best practices, be highly scalable, and ensure a smooth user experience. I have include the bakend api.http file
+
+    React.js
+    Tailwind CSS Javsascript
+    Axios
+    Lucide React Icons
+    Stripe toast etc whatever u need but never use (nextjs typeacript)
+
+    make constans/index.js file to load statik data like base backend urls navlinks etc
+    make componets/ui for reuable componts like buttons imnputs card modal etc
+    make services folder and do backend jobs with axios like data fetch update etc
+    try to avoid svgs use lucid react icons instead
+
+    make the ui stunning
+
+    Clean and minimal UI with smooth animations
+    Fully responsive (mobile-first)
+    Dark mode support (optional)
+    Consistent  UI with Tailwind CSS
+
+    add gradinents animatoin shadow background patterns light dark mood
+
+    User Authentication:
+
+    Register (regular users and admins)
+    Email verification
+    JWT-based login/authentication
+    Profile management (view/update)
+    Token refresh
+
+    Password Management:
+    Change password (authenticated users)
+    Request password reset
+    Reset password confirmation
+
+    House Listings:
+
+    Create, read, update house listings
+    Add multiple categories to houses
+    View lightweight list or detailed house information
+
+    Interactions:
+
+    Rent Requests:
+
+    Send rent requests with custom messages
+    Accept/reject requests (owners or admins)
+    Process payments via Stripe
+    View all rent requests
+
+    Reviews:
+    Add, update, and delete reviews for houses
+    View average ratings and review counts
+
+    Favorites:
+    Add/remove houses to personal favorite list
+    View all favorited houses
+
+    Admin Capabilities:
+
+    Manage all users (create, view, update)
+    Manage house listings (approve, update, view all including unapproved)
+    Manage categories
+    Override rent request processes
+
+
+
+    Backend API (Django DRF) Reference:
+
+    Base URL: http://127.0.0.1:8000/api/
+
+    Endpoints include:
+
+    /api/auth/register/ (Register)
+    /api/auth/login/ (Login)
+    /api/auth/profile/ (User profile)
+    /api/properties/houses/ (List houses)
+    /api/properties/houses/<id>/ (House details)
+    /api/interactions/rent-requests/ (Rent requests)
+    /api/interactions/reviews/ (Reviews)
+    /api/interactions/favorites/ (Favorites)
+    /api/admin/users/ (Admin user management)
+
+
+
 @baseurl = http://127.0.0.1:8000
 
 ###! ================== ACCOUNT ENDPOINTS ================== ##
@@ -268,8 +353,6 @@ Authorization: Bearer {{admin_access_token}}
 
 ###? 34. List All Houses (Admin sees all, Paginated)
 GET {{baseurl}}/api/properties/houses/?page=1
-###
-GET {{baseurl}}/api/properties/houses/?page=all
 Authorization: Bearer {{admin_access_token}}
 
 ###? 35. Update House (Admin Only; assume house ID is 2)
