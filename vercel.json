@@ -1,34 +1,41 @@
 {
     "version": 2,
     "builds": [
-        {
-            "src": "house_rent/wsgi.py",
-            "use": "@vercel/python",
-            "config": { "maxLambdaSize": "15mb", "maxDuration": 60 }
-        },
-        {
-            "src": "staticfiles/**",
-            "use": "@vercel/static"
+      {
+        "src": "house_rent/wsgi.py",
+        "use": "@vercel/python",
+        "config": { "maxLambdaSize": "15mb", "runtime": "python3.9" }
+      },
+      {
+        "src": "build_staticfiles.sh",
+        "use": "@vercel/static-build",
+        "config": {
+          "distDir": "staticfiles"
         }
+      }
     ],
     "routes": [
-        {
-            "src": "/static/(.*)",
-            "dest": "/staticfiles/$1"
-        },
-        {
-            "src": "/api/(.*)",
-            "headers": {
-                "Access-Control-Allow-Credentials": "true",
-                "Access-Control-Allow-Origin": "*",
-                "Access-Control-Allow-Methods": "GET,OPTIONS,PATCH,DELETE,POST,PUT",
-                "Access-Control-Allow-Headers": "X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version, Authorization"
-            },
-            "dest": "house_rent/wsgi.py"
-        },
-        {
-            "src": "/(.*)",
-            "dest": "house_rent/wsgi.py"
-        }
-    ]
-}
+      {
+        "src": "/static/(.*)",
+        "dest": "/staticfiles/$1"
+      },
+      {
+        "src": "/admin/(.*)",
+        "dest": "house_rent/wsgi.py"
+      },
+      {
+        "src": "/api/(.*)",
+        "dest": "house_rent/wsgi.py"
+      },
+      {
+        "handle": "filesystem"
+      },
+      {
+        "src": "/(.*)",
+        "dest": "house_rent/wsgi.py"
+      }
+    ],
+    "env": {
+      "PYTHONUNBUFFERED": "1"
+    }
+  }

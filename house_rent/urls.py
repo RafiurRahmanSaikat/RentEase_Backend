@@ -1,5 +1,4 @@
 # house_rent/urls.py
-from account.views import UserViewSet
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
@@ -11,6 +10,8 @@ from drf_spectacular.views import (
 )
 from rest_framework.routers import DefaultRouter
 
+from account.views import UserViewSet
+
 router = DefaultRouter()
 
 
@@ -21,7 +22,7 @@ urlpatterns = [
     path("api/auth/", include("account.urls")),
     path("api/properties/", include("properties.urls")),
     path("api/interactions/", include("interactions.urls")),
-    path("silk/", include("silk.urls", namespace="silk")),
+    # path("silk/", include("silk.urls", namespace="silk")),
     # Register the router URLs
     path("api/admin/", include(router.urls)),
     # YOUR PATTERNS
