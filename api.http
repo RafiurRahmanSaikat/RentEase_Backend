@@ -164,7 +164,7 @@ Authorization: Bearer {{owner_access_token}}
 }
 
 ###? 16. Get House Details (Public - full details with owner and reviews)
-GET {{baseurl}}/api/properties/houses/6/
+GET {{baseurl}}/api/properties/houses/1/
 
 ###? 17. Submit House for Approval (Owner Only)
 POST {{baseurl}}/api/properties/houses/26/submit_for_approval/
@@ -216,7 +216,7 @@ GET {{baseurl}}/api/interactions/reviews/?page=1
 Authorization: Bearer {{admin_access_token}}
 
 ###? 26. Add a Review for a House (Using house_id in URL)
-POST {{baseurl}}/api/properties/houses/20/add_review/
+POST {{baseurl}}/api/properties/houses/1/add_review/
 Content-Type: application/json
 Authorization: Bearer {{user_access_token}}
 

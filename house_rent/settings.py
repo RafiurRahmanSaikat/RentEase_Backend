@@ -29,12 +29,14 @@ CORS_ALLOWED_ORIGINS = [
     # Add your frontend domains here
     "https://rent-ease-kappa.vercel.app",
     "http://localhost:3000",
+    "http://localhost:5173",
 ]
 CORS_ALLOW_METHODS = ["DELETE", "GET", "OPTIONS", "PATCH", "POST", "PUT"]
 CSRF_TRUSTED_ORIGINS = [
     # Add your frontend domains here
     "https://rent-ease-kappa.vercel.app",
     "http://localhost:3000",
+    "http://localhost:5173",
 ]
 CORS_ALLOW_HEADERS = list(default_headers) + [
     "X-CSRF-Token",
@@ -110,19 +112,16 @@ DATABASES = {
         },
     }
 }
+#! LOCAL DEV Database
+# https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-# Use local memory cache instead of Redis for simplicity on serverless
-CACHES = {
-    "default": {
-        "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
-        "LOCATION": "rentease-cache",
-    }
-}
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.sqlite3",
+#         "NAME": BASE_DIR / "db.sqlite3",
+#     }
+# }
 
-# Use database for sessions since local memory won't persist across serverless functions
-SESSION_ENGINE = "django.contrib.sessions.backends.db"
-SESSION_COOKIE_SECURE = True
-SESSION_COOKIE_HTTPONLY = True
 
 # Custom User Model
 AUTH_USER_MODEL = "account.User"
@@ -237,32 +236,32 @@ STRIPE_SECRET_KEY = config("STRIPE_SECRET_KEY", default="")
 STRIPE_PUBLISHABLE_KEY = config("STRIPE_PUBLISHABLE_KEY", default="")
 
 # Simplified Logging Configuration
-LOGGING = {
-    "version": 1,
-    "disable_existing_loggers": False,
-    "formatters": {
-        "verbose": {
-            "format": "{levelname} {asctime} {module} {message}",
-            "style": "{",
-        },
-    },
-    "handlers": {
-        "console": {
-            "level": "INFO",
-            "class": "logging.StreamHandler",
-            "formatter": "verbose",
-        },
-    },
-    "loggers": {
-        "django": {
-            "handlers": ["console"],
-            "level": "INFO",
-            "propagate": True,
-        },
-        "django.request": {
-            "handlers": ["console"],
-            "level": "ERROR",
-            "propagate": False,
-        },
-    },
-}
+# LOGGING = {
+#     "version": 1,
+#     "disable_existing_loggers": False,
+#     "formatters": {
+#         "verbose": {
+#             "format": "{levelname} {asctime} {module} {message}",
+#             "style": "{",
+#         },
+#     },
+#     "handlers": {
+#         "console": {
+#             "level": "INFO",
+#             "class": "logging.StreamHandler",
+#             "formatter": "verbose",
+#         },
+#     },
+#     "loggers": {
+#         "django": {
+#             "handlers": ["console"],
+#             "level": "INFO",
+#             "propagate": True,
+#         },
+#         "django.request": {
+#             "handlers": ["console"],
+#             "level": "ERROR",
+#             "propagate": False,
+#         },
+#     },
+# }
