@@ -24,7 +24,7 @@ from properties.models import Category, House
 
 # Fixed image URLs
 HOUSE_IMAGE_URL = "https://i.ibb.co/VWgQBg65/house.jpg"
-USER_AVATAR_URL = "https://i.ibb.co/qMWG0D1/user-avatar.png"
+USER_AVATAR_URL = "https://i.ibb.co.com/qMWG0D1j/user-avatar.png"
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(message)s")

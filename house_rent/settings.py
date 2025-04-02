@@ -234,34 +234,3 @@ DEFAULT_FROM_EMAIL = config("DEFAULT_FROM_EMAIL", default=EMAIL_HOST_USER)
 # Stripe Configuration
 STRIPE_SECRET_KEY = config("STRIPE_SECRET_KEY", default="")
 STRIPE_PUBLISHABLE_KEY = config("STRIPE_PUBLISHABLE_KEY", default="")
-
-# Simplified Logging Configuration
-# LOGGING = {
-#     "version": 1,
-#     "disable_existing_loggers": False,
-#     "formatters": {
-#         "verbose": {
-#             "format": "{levelname} {asctime} {module} {message}",
-#             "style": "{",
-#         },
-#     },
-#     "handlers": {
-#         "console": {
-#             "level": "INFO",
-#             "class": "logging.StreamHandler",
-#             "formatter": "verbose",
-#         },
-#     },
-#     "loggers": {
-#         "django": {
-#             "handlers": ["console"],
-#             "level": "INFO",
-#             "propagate": True,
-#         },
-#         "django.request": {
-#             "handlers": ["console"],
-#             "level": "ERROR",
-#             "propagate": False,
-#         },
-#     },
-# }
