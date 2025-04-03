@@ -307,3 +307,22 @@ Authorization: Bearer {{admin_access_token}}
   "image": "http://example.com/another_profile.jpg",
   "role": "admin"
 }
+
+
+
+
+###  List houses with min_price
+GET {{baseurl}}/api/properties/houses/?min_price=50000
+
+
+### List houses with max_price
+GET {{baseurl}}/api/properties/houses/?max_price=1500
+Authorization:  Bearer {{user_access_token}}
+
+### List houses within a price range
+GET {{baseurl}}/api/properties/houses/?min_price=500&max_price=1500
+Authorization:  Bearer {{user_access_token}}
+
+### List houses with other filters and price
+GET {{baseurl}}/api/properties/houses/?category=1&location=New%20York&min_price=700&max_price=2000
+Authorization: Bearer {{user_access_token}}

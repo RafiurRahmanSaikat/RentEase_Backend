@@ -62,6 +62,44 @@ class HouseViewSet(BaseViewSetWithAllPagination):
                 ),
             )
 
+        # Apply filters from request parameters
+        if self.action == "list":
+            # Filter by search term
+            search = self.request.query_params.get("search", None)
+            if search:
+                qs = qs.filter(
+                    Q(title__icontains=search)
+                    | Q(description__icontains=search)
+                    | Q(location__icontains=search)
+                )
+
+            # Filter by category
+            category = self.request.query_params.get("category", None)
+            if category:
+                qs = qs.filter(categories__id=category)
+
+            # Filter by price range
+            min_price = self.request.query_params.get("min_price", None)
+            if min_price:
+                try:
+                    min_price = float(min_price)
+                    qs = qs.filter(price__gte=min_price)
+                except (ValueError, TypeError):
+                    pass
+
+            max_price = self.request.query_params.get("max_price", None)
+            if max_price:
+                try:
+                    max_price = float(max_price)
+                    qs = qs.filter(price__lte=max_price)
+                except (ValueError, TypeError):
+                    pass
+
+            # Filter by location
+            location = self.request.query_params.get("location", None)
+            if location:
+                qs = qs.filter(location__icontains=location)
+
         if self.request.user.is_authenticated:
             if self.request.user.role == "admin":
                 return qs  # Admin can see all houses

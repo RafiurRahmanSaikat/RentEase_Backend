@@ -14,6 +14,7 @@ SECRET_KEY = config("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config("DEBUG", default=False, cast=bool)
 
+
 ALLOWED_HOSTS = [
     ".vercel.app",
     ".now.sh",
@@ -97,7 +98,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "house_rent.wsgi.application"
 
-# Database Configuration - Simplified for Supabase PostgreSQL
+# ? Database Configuration - Simplified for Supabase PostgreSQL
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",  # Changed from pooled connection
